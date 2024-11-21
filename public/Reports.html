@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top header area with Back button */
+        .top-header {
+            background-color: #2E7D32; /* Dark green */
+            width: 100%;
+            padding: 10px; /* Reduced padding from 15px to 10px */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            padding-left: 20px; /* Adjust padding to move Back button left */
+            padding-right: 20px; /* Adjust padding to move Reports right */
+        }
+
+        /* Back button styling */
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            position: relative; /* Required for underline */
+        }
+
+        .back-button i {
+            margin-right: 5px;
+        }
+
+        .back-button::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            bottom: -2px;
+            left: 50%;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .back-button:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Main container for rectangles */
+        .container {
+            display: flex;
+            justify-content: center; /* Centering the record boxes */
+            gap: 20px;
+            margin-top: 300px; /* Adjusted space for the reduced top header */
+            padding-bottom: 20px;
+            width: 100%;
+        }
+
+        /* Record box styling */
+        .record-box {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 300px; /* Adjusted width */
+            height: 120px; /* Increased height for better appearance */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .record-box h2 {
+            font-size: 20px;
+            color: #2E7D32; /* Dark green */
+            margin: 0;
+        }
+
+        .record-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .record-box:hover {
+            transform: scale(1.03);
+        }
+
+        /* Popup modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 20;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px; /* Maximum width for modal */
+            border-radius: 10px;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top header with Back button -->
+    <div class="top-header">
+        <h1>Reports</h1>
+        <a href="dashboard.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <!-- Main content area for record boxes -->
+    <div class="container">
+        <!-- Record Box for Test Reports -->
+        <div class="record-box" id="testReports">
+            <h2>Test Reports</h2>
+        </div>
+
+        <!-- Record Box for Doctor Treatment Info -->
+        <div class="record-box" id="doctorInfo">
+            <h2>Doctor Treatment Information</h2>
+        </div>
+
+        <!-- Record Box for Other Records -->
+        <div class="record-box" id="otherRecords">
+            <h2>Other Records</h2>
+        </div>
+    </div>
+
+    <!-- The Modal for Test Reports -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeTestModal">&times;</span>
+            <h2>Test Reports</h2>
+            <p><strong>Date: October 15, 2024</strong></p>
+            <p><strong>Blood Test</strong><br>Status: Completed<br>Notes: Cholesterol levels within normal range.</p>
+            <p><strong>Urine Analysis</strong><br>Status: Completed<br>Notes: No signs of infection detected.</p>
+        </div>
+    </div>
+
+    <!-- The Modal for Doctor Treatment Info -->
+    <div id="doctorModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeDoctorModal">&times;</span>
+            <h2>Doctor Treatment Information</h2>
+            <p><strong>Date: October 25, 2024</strong></p>
+            <p><strong>Dr. Smith</strong><br>Specialty: Cardiology<br>Notes: Recommended daily exercise and a balanced diet.</p>
+            <p><strong>Dr. Lee</strong><br>Specialty: General Medicine<br>Notes: Prescribed medication for seasonal allergies.</p>
+        </div>
+    </div>
+
+    <!-- The Modal for Other Records -->
+    <div id="otherModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeOtherModal">&times;</span>
+            <h2>Other Records</h2>
+            <p><strong>Date: October 10, 2024</strong></p>
+            <p><strong>Vaccination Records</strong><br>Status: Completed<br>Notes: COVID-19 booster received.</p>
+            <p><strong>Allergy Information</strong><br>Details: No known allergies recorded.</p>
+        </div>
+    </div>
+
+    <script>
+        // Get the modals
+        var testModal = document.getElementById("testModal");
+        var doctorModal = document.getElementById("doctorModal");
+        var otherModal = document.getElementById("otherModal");
+
+        // Get the record boxes
+        var testBox = document.getElementById("testReports");
+        var doctorBox = document.getElementById("doctorInfo");
+        var otherBox = document.getElementById("otherRecords");
+
+        // Get the <span> elements that close the modals
+        var closeTestModal = document.getElementById("closeTestModal");
+        var closeDoctorModal = document.getElementById("closeDoctorModal");
+        var closeOtherModal = document.getElementById("closeOtherModal");
+
+        // Open Test Reports modal
+        testBox.onclick = function() {
+            testModal.style.display = "block";
+        }
+
+        // Open Doctor Treatment Information modal
+        doctorBox.onclick = function() {
+            doctorModal.style.display = "block";
+        }
+
+        // Open Other Records modal
+        otherBox.onclick = function() {
+            otherModal.style.display = "block";
+        }
+
+        // Close Test Reports modal
+        closeTestModal.onclick = function() {
+            testModal.style.display = "none";
+        }
+
+        // Close Doctor Treatment Information modal
+        closeDoctorModal.onclick = function() {
+            doctorModal.style.display = "none";
+        }
+
+        // Close Other Records modal
+        closeOtherModal.onclick = function() {
+            otherModal.style.display = "none";
+        }
+
+        // Close modals when clicking outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == testModal) {
+                testModal.style.display = "none";
+            } else if (event.target == doctorModal) {
+                doctorModal.style.display = "none";
+            } else if (event.target == otherModal) {
+                otherModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

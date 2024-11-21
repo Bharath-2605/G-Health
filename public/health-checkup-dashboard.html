@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Checkup Dashboard</title>
+   <link rel="stylesheet" href="dashboard.css">
+   <!-- Font Awesome CDN for icons -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <style>
+       body {
+           font-family: Arial, sans-serif;
+           background-color: #f5f5f5;
+           display: flex;
+           flex-direction: column;
+           height: 100vh;
+           margin: 0;
+           justify-content: space-between;
+       }
+       .header {
+           background-color: #2E7D32;
+           padding: 10px;
+           color: white;
+       }
+       .nav-menu {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+       .container {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           margin-top: 20px;
+           flex-grow: 1;
+           justify-content: flex-start;
+       }
+       .box-container {
+           display: flex;
+           justify-content: space-between;
+           width: 100%;
+           margin-top: 20px;
+           margin-bottom: 20px;
+       }
+       .box {
+           border: 2px solid #ccc;
+           border-radius: 8px;
+           padding: 20px;
+           margin: 10px;
+           flex: 1;
+           text-align: center;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+           transition: transform 0.2s, box-shadow 0.2s;
+       }
+       .box:hover {
+           transform: scale(1.05);
+           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+       }
+       .select-container {
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+       select, input[type="date"] {
+           width: 80%;
+           padding: 10px;
+           margin-top: 10px;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           background-color: white;
+           color: #000;
+           font-weight: bold;
+       }
+       select:focus, input[type="date"]:focus {
+           border-color: #009688;
+           outline: none;
+       }
+       .availability-text {
+           color: red;
+           font-weight: bold;
+           font-size: 1.5em;
+           margin-bottom: 20px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+       .availability-text i {
+           margin-right: 10px;
+           color: red;
+       }
+       .moving-text {
+           font-size: 1em;
+           color: #000;
+           animation: move 10s linear infinite;
+           margin-top: 10px;
+           text-align: center;
+       }
+       @keyframes move {
+           0% { transform: translateX(100%); }
+           100% { transform: translateX(-100%); }
+       }
+       #submit {
+           margin-top: 20px;
+           padding: 15px 30px; /* Increase button padding for larger size */
+           background-color: #4CAF50; /* Green color */
+           color: white; /* White text */
+           border: none; /* Remove border */
+           border-radius: 5px; /* Rounded corners */
+           font-size: 1.2em; /* Increase font size */
+           cursor: pointer; /* Pointer cursor on hover */
+           transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+       }
+       #submit:hover {
+           background-color: #45a049; /* Darker green on hover */
+           transform: scale(0.9); /* Reduce size on hover */
+       }
+   </style>
+</head>
+<body>
+   <header class="header">
+       <nav class="nav-menu">
+           <a href="history.html" style="color: white;">
+               <i class="fas fa-clock"></i> History
+           </a>
+           <a href="#" id="back" style="margin-left: auto; color: white;">
+               <i class="fas fa-arrow-left"></i> Back
+           </a>
+       </nav>
+   </header>
+
+
+   <div class="container">
+       <!-- Moving Text for Queries -->
+       <div class="moving-text">
+           If any queries, contact: 8247370980 / 1234567890
+       </div>
+
+
+       <!-- Availability Information -->
+       <div class="availability-text">
+           <i class="fas fa-info-circle"></i>
+           Slots are available from Monday to Friday.<br>
+           Timings are from 10 AM to 4 PM.
+       </div>
+
+
+       <div class="box-container">
+           <div class="box">
+               <div class="select-container">
+                   <select id="doctor">
+                    <option value="">Select Doctor</option>
+                    <option value="doctor1">General Medicine</option>
+                    <option value="doctor2">Dermatology</option>
+                    <option value="doctor3">Radiology</option>
+                    <option value="doctor4">Orthopedics</option>
+                    <option value="doctor5">Gynecology</option>
+                    <option value="doctor6">Pediatrics</option>
+                    <option value="doctor7">Respiratory</option>
+                    <option value="doctor8">Ophthalmology</option>
+                    <option value="doctor9">OtoRhionlaryngology(ENT)</option>
+                   </select>
+               </div>
+           </div>
+
+
+           <div class="box">
+               <div class="select-container">
+                   <input type="date" id="date" min="">
+               </div>
+           </div>
+
+
+           <div class="box">
+               <div class="select-container">
+                   <select id="time">
+                       <option value="">Select Time</option>
+                       <!-- Times will be added dynamically by JavaScript -->
+                   </select>
+               </div>
+           </div>
+       </div>
+      
+       <button id="submit">Submit</button>
+       <div id="message" style="color: green; margin-top: 20px;"></div>
+   </div>
+
+
+   <!-- JavaScript for dynamic date/time and redirection -->
+   <script>
+       // Redirect back to the Checkup button
+       document.getElementById('back').addEventListener('click', function() {
+           window.location.href = 'dashboard.html';
+       });
+
+
+       // Function to get available time slots (10 AM to 4 PM, skipping Saturday and Sunday)
+       function getAvailableTimeSlots() {
+           const timeSlots = [];
+           const startTime = 10; // 10 AM
+           const endTime = 16; // 4 PM
+
+
+           for (let hour = startTime; hour < endTime; hour++) { // Less than 4 PM
+               const time = new Date();
+               time.setHours(hour, 0, 0);
+               const timeFormatted = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+               timeSlots.push(timeFormatted);
+           }
+           return timeSlots;
+       }
+
+
+       // Function to populate the time dropdown
+       function populateTimeDropdown() {
+           const timeSelect = document.getElementById('time');
+           const timeSlots = getAvailableTimeSlots();
+
+
+           timeSlots.forEach(time => {
+               const option = document.createElement('option');
+               option.value = time;
+               option.textContent = time;
+               timeSelect.appendChild(option);
+           });
+       }
+
+
+       // Set the minimum selectable date to today and remove weekends
+       function setMinDate() {
+           const today = new Date();
+           while (today.getDay() === 6 || today.getDay() === 0) { // Skip Saturday (6) and Sunday (0)
+               today.setDate(today.getDate() + 1);
+           }
+           document.getElementById('date').setAttribute('min', today.toISOString().split('T')[0]);
+       }
+
+
+       // Handle the submit button click
+       document.getElementById('submit').addEventListener('click', function() {
+           const doctor = document.getElementById('doctor').value;
+           const date = document.getElementById('date').value;
+           const time = document.getElementById('time').value;
+
+
+           if (doctor && date && time) {
+               document.getElementById('message').textContent = 'Successfully Booked';
+               // Store the booking in local storage for history
+               const history = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+               history.push({ doctor, date, time });
+               localStorage.setItem('bookingHistory', JSON.stringify(history));
+               // Reset the fields after booking
+               document.getElementById('doctor').value = '';
+               document.getElementById('date').value = '';
+               document.getElementById('time').value = '';
+           } else {
+               document.getElementById('message').textContent = 'Please fill in all fields.';
+           }
+       });
+
+
+       // Populate time slots and set minimum date when the page loads
+       window.onload = function() {
+           populateTimeDropdown();
+           setMinDate();
+       };
+   </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>G-Health</title>
+   <link rel="stylesheet" href="style.css">
+   <style>
+       /* Align input fields for User ID and Password */
+       input[type="text"], input[type="password"] {
+           width: 100%;
+           padding: 10px;
+           margin: 8px 0;
+           box-sizing: border-box;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           background-color: #f8f8f8;
+           font-size: 16px;
+       }
+
+       /* Styling for the container */
+       .container {
+           width: 300px;
+           margin: 0 auto;
+       }
+
+       /* Captcha section styling */
+       .captcha {
+           display: flex;
+           align-items: center;
+           gap: 10px;
+           margin-top: 10px;
+       }
+
+       .captcha span {
+           font-size: 18px;
+           padding: 10px;
+           background-color: #ccc;
+           border: 1px solid #999;
+           border-radius: 4px;
+       }
+
+       .refresh-btn {
+           background-color: darkgreen; /* Dark red color */
+           color: white;
+           border: none;
+           padding: 5px;
+           border-radius: 4px;
+           font-size: 16px;
+           cursor: pointer;
+       }
+
+       #captcha {
+           width: 100px;
+           padding: 10px;
+           font-size: 16px;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+       }
+
+       /* Logo styling */
+       .logo {
+           width: 100px;
+           display: block;
+           margin: 0 auto 20px auto;
+       }
+   </style>
+</head>
+<body>
+   <div class="container">
+       <!-- Logo Section -->
+       <img src="/Users/bharathbollineni/Desktop/G-Health/logo.jpeg" alt="G-Health Logo" class="logo">
+
+       <h1>G-Health</h1>
+       <div id="login-form">
+           <input type="text" id="username" placeholder="User ID" required>
+           <input type="password" id="password" placeholder="Password" required>
+
+           <!-- Captcha Section -->
+           <div class="captcha">
+               <span id="captcha-question">5 + 7</span>
+               <button type="button" class="refresh-btn">🔄</button>
+               <input type="text" id="captcha" placeholder="Enter sum" required>
+           </div>
+
+           <button id="login-button">Login</button>
+           <p><a href="#" id="show-signup">Create Account</a></p>
+       </div>
+
+       <div id="signup-form" style="display: none;">
+           <input type="text" id="signup-username" placeholder="User ID" required>
+           <input type="password" id="signup-password" placeholder="Password" required>
+           <button id="signup-button">Create Account</button>
+           <p><a href="#" id="show-login">Back to Login</a></p>
+       </div>
+      
+       <p><a href="#" id="reset-password">Reset Password</a></p>
+   </div>
+
+   <script>
+       // Function to store user credentials in localStorage as a JSON object
+       function storeUserCredentials(username, password) {
+           const users = JSON.parse(localStorage.getItem('users')) || {};
+          
+           if (users[username]) {
+               alert('Username already exists. Please choose a different username.');
+               return false;
+           }
+          
+           users[username] = password;
+           localStorage.setItem('users', JSON.stringify(users));
+           return true;
+       }
+
+       // Function to validate login credentials
+       function validateLoginCredentials(username, password) {
+           const users = JSON.parse(localStorage.getItem('users')) || {};
+           return users[username] && users[username] === password;
+       }
+
+       // Show signup form
+       document.getElementById('show-signup')?.addEventListener('click', function() {
+           document.getElementById('login-form').style.display = 'none';
+           document.getElementById('signup-form').style.display = 'block';
+       });
+
+       // Show login form
+       document.getElementById('show-login')?.addEventListener('click', function() {
+           document.getElementById('signup-form').style.display = 'none';
+           document.getElementById('login-form').style.display = 'block';
+       });
+
+       // Signup process
+       document.getElementById('signup-button')?.addEventListener('click', function() {
+           const signupUsername = document.getElementById('signup-username').value;
+           const signupPassword = document.getElementById('signup-password').value;
+
+           if (storeUserCredentials(signupUsername, signupPassword)) {
+               alert('Account created successfully!');
+               document.getElementById('signup-form').style.display = 'none';
+               document.getElementById('login-form').style.display = 'block';
+           }
+       });
+
+       // Function to generate random captcha
+       let captchaSum;
+       function generateCaptcha() {
+           const num1 = Math.floor(Math.random() * 10);
+           const num2 = Math.floor(Math.random() * 10);
+           captchaSum = num1 + num2; // Store the sum of the two numbers
+           document.getElementById('captcha-question').textContent = `${num1} + ${num2}`;
+       }
+
+       // Add event listener to regenerate button
+       document.querySelector('.refresh-btn').addEventListener('click', generateCaptcha);
+
+       // Initial captcha generation when the page loads
+       generateCaptcha();
+
+       // Login process
+       document.getElementById('login-button')?.addEventListener('click', function(event) {
+           const username = document.getElementById('username').value;
+           const password = document.getElementById('password').value;
+           const captchaInput = parseInt(document.getElementById('captcha').value, 10); // Get entered captcha value
+
+           // Validate credentials and captcha
+           if (captchaInput !== captchaSum) {
+               event.preventDefault(); // Stop form submission
+               alert('Invalid captcha. Please try again.');
+           } else if (validateLoginCredentials(username, password)) {
+               window.location.href = 'dashboard.html'; // Redirect to dashboard if everything is correct
+           } else {
+               alert('Invalid username or password.');
+           }
+       });
+
+       // Reset Password functionality
+       document.getElementById('reset-password')?.addEventListener('click', function() {
+           const email = prompt("Please enter your email address for password reset:");
+           if (email) {
+               alert(`A reset link has been sent to ${email}.`);
+           } else {
+               alert('Email address cannot be empty.');
+           }
+       });
+   </script>
+
+</body>
+</html>
+

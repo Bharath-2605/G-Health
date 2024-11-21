@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-between;
+        }
+        .header {
+            background-color: #2E7D32;
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .header a {
+            color: white;
+            margin-left: auto;
+            text-decoration: none;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="health-checkup-dashboard.html">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </header>
+
+    <div class="container">
+        <h2>Booking History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="history-body">
+                <!-- Booking history will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to load booking history from local storage
+        function loadHistory() {
+            const historyBody = document.getElementById('history-body');
+            const historyData = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+
+            if (historyData.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 3;
+                cell.textContent = 'No booking history available.';
+                historyBody.appendChild(row.appendChild(cell));
+            } else {
+                historyData.forEach(booking => {
+                    const row = document.createElement('tr');
+                    const doctorCell = document.createElement('td');
+                    const dateCell = document.createElement('td');
+                    const timeCell = document.createElement('td');
+
+                    doctorCell.textContent = booking.doctor;
+                    dateCell.textContent = booking.date;
+                    timeCell.textContent = booking.time;
+
+                    row.appendChild(doctorCell);
+                    row.appendChild(dateCell);
+                    row.appendChild(timeCell);
+                    historyBody.appendChild(row);
+                });
+            }
+        }
+
+        // Load history when the page is loaded
+        window.onload = loadHistory;
+    </script>
+</body>
+</html>

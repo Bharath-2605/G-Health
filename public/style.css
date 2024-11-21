@@ -1,0 +1,89 @@
+/* Updated container styling for full-page centering */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f5f5f5; /* Light background color */
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    border: 2px solid #000; /* Optional: Border around the form */
+    background-color: #ffffff; /* White background for form */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for depth */
+    text-align: center;
+}
+
+/* Styling for Input Fields (User ID and Password) */
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 2px solid #000;
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #f0f0f0;
+}
+
+/* Styling for the Captcha Section */
+.captcha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.captcha span {
+    font-size: 18px;
+    padding: 10px;
+    background-color: #dcdcdc;
+    border: 2px solid #000;
+    border-radius: 5px;
+    width: 50px;
+    text-align: center;
+}
+
+.refresh-btn {
+    background-color: darkgreen;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#captcha {
+    width: 60px;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+/* Logo Styling */
+.logo {
+    width: 100px;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+/* General button styling for Login */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: darkgreen;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}

@@ -1,0 +1,57 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.header {
+    background-color: darkgreen; /* Green color for the header */
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.header nav {
+    display: flex;
+    justify-content: center; /* Centering the navigation */
+}
+
+.header nav a {
+    margin: 0 30px; /* Adjusted spacing between navigation items */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative; /* For positioning the pseudo-element */
+}
+
+.header nav a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px; /* Thickness of the underline */
+    background: white; /* Color of the underline */
+    left: 50%;
+    bottom: -5px; /* Position the underline slightly below the text */
+    transform: translateX(-50%) scaleX(0); /* Start hidden */
+    transition: transform 0.3s ease; /* Animation speed */
+}
+
+.header nav a:hover::after {
+    transform: translateX(-50%) scaleX(1); /* Expand underline on hover */
+}
+
+.header nav a:hover {
+    text-decoration: none; /* Prevent default underline on hover */
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: darkgreen; /* Dark green for the main heading */
+}
+
+p {
+    font-size: 16px;
+}

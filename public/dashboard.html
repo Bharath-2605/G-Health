@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-Health Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Styles for the slideshow */
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .slideshow-container img {
+            width: 100%;
+            display: none; /* Hide all images by default */
+        }
+
+        /* Display the first image initially */
+        .slideshow-container img:first-child {
+            display: block;
+        }
+
+        /* Dots container */
+        .dots {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 2px;
+            background-color: green;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .active {
+            background-color: #555;
+        }
+
+        /* Full-screen modal for the About section */
+        .about-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Darker, semi-transparent background */
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 20px;
+            text-align: center;
+            overflow-y: auto; /* Scroll if content overflows */
+        }
+
+        .about-content h2 {
+            margin-top: 0;
+        }
+
+        .close-btn {
+            color: white;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-menu">
+            <a href="#" id="home"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="health-checkup"><i class="fas fa-heartbeat"></i> Health Checkup</a>
+            <a href="#" id="records"><i class="fas fa-file-medical"></i> Reports</a>
+            <a href="#" id="personal-details"><i class="fas fa-user-circle"></i> Personal Details</a>
+            <a href="https://bloodbankgitam.github.io/Bloodbank_react/" id="blood-bank" target="_blank"><i class="fas fa-tint"></i> Blood Bank</a>
+            <a href="#" id="about"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#" id="logout" style="float: right;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Welcome to G-Health</h2>
+        <p>Your personal health information is at your fingertips.</p>
+
+        <!-- Slideshow container -->
+        <div class="slideshow-container">
+            <img src="./Images/Image 1.jpg" alt="Image 1">
+            <img src="./Images/Image 2.jpg" alt="Image 2">
+            <img src="./Images/Image 4.jpg" alt="Image 4">
+        </div>
+
+        <!-- Dots for navigation -->
+        <div class="dots">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <!-- Full-screen About Modal -->
+        <div id="aboutModal" class="about-modal">
+            <div class="about-content">
+                <span class="close-btn" id="closeAbout">&times;</span>
+                <h2>About G-Health Dashboard</h2>
+                <p>G-Health is designed as your personal health companion, providing seamless access to essential health information and resources. Our mission is to empower individuals by organizing and simplifying their healthcare needs in one convenient dashboard.</p>
+                <h3>Features:</h3>
+                <ul>
+                    <li><strong>Health Checkup Reports:</strong> View and manage your health reports, including routine checkups and specialized screenings.</li>
+                    <li><strong>Personal Details:</strong> Keep your health-related details updated for easier reference.</li>
+                    <li><strong>Blood Bank Access:</strong> Instantly locate nearby blood banks or make donations.</li>
+                    <li><strong>Security and Privacy:</strong> Your data is secure, adhering to strict privacy standards.</li>
+                </ul>
+                <p>G-Health is here to support you in achieving a healthier lifestyle with minimal effort and maximum convenience.</p>
+                <p><strong>"Your health deserves the best, and we are devoted to ensuring it is simple, intelligent, and centered on your needs."</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for redirection, logout functionality, slideshow, and modal display -->
+    <script src="customScript.js"></script>
+    <script>
+        // Redirecting to the Health Checkup page when clicked
+        document.getElementById('health-checkup').addEventListener('click', function() {
+            window.location.href = 'health-checkup-dashboard.html';
+        });
+
+        // Redirecting to the Reports page when clicked
+        document.getElementById('records').addEventListener('click', function() {
+            window.location.href = 'Reports.html'; // Ensure the path is correct
+        });
+
+        // Redirecting to the Personal Details page when clicked
+        document.getElementById('personal-details').addEventListener('click', function() {
+            window.location.href = 'personal-details.html';
+        });
+
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        // Slideshow functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slideshow-container img');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlides() {
+            slides.forEach((slide, index) => {
+                slide.style.display = (index === slideIndex) ? 'block' : 'none';
+                dots[index].className = dots[index].className.replace(" active", "");
+            });
+            dots[slideIndex].className += " active";
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        }
+
+        function currentSlide(n) {
+            slideIndex = n - 1;
+            showSlides();
+        }
+
+        showSlides();
+
+        // Show About modal on click
+        document.getElementById('about').addEventListener('click', function() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        });
+
+        // Close About modal
+        document.getElementById('closeAbout').addEventListener('click', function() {
+            document.getElementById('aboutModal').style.display = 'none';
+        });
+
+        // Close the modal when clicking outside the modal content
+        window.onclick = function(event) {
+            const modal = document.getElementById('aboutModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
+
