@@ -62,7 +62,7 @@ G-Health/
    ```
 2.**Navigate to the project folder** 📂
    ```sh
-    cd G-Health
+   cd G-Health
    ```
 ---
 ## 🔐 Firebase Setup (for Auth)
@@ -85,9 +85,7 @@ G-Health/
   - 📊 **Health Checkup Dashboard** to track tests.
   - 📂 **Records** to view medical history.
 - Use dashboard links and back buttons for smooth navigation.
-
 ---
-
 ## 🧪 Sample Features to Explore
 
 - ✅ Add dummy test results in HTML for demo.
