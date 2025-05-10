@@ -30,7 +30,7 @@
 ---
 
 ## 📂 Project Structure
-
+```
 G-Health/
 │
 ├── index.html # Homepage
@@ -50,7 +50,7 @@ G-Health/
 ├── firebase.js # Firebase Config
 └── README.md # Documentation
 
-
+```
 
 ---
 
